@@ -1,24 +1,33 @@
 import { Component } from 'react';
-import ContactForm from './ContactForm';
-import ContactsList from './ContactsList';
-import Filter from './Filter';
+import ContactForm from '../ContactForm';
+import ContactsList from '../ContactsList';
+import Filter from '../Filter';
 import { nanoid } from 'nanoid';
 import Notiflix from 'notiflix';
+import { Wrapper } from './App.styled';
+import contacts from 'components/data/contacts';
 
 export class App extends Component {
   state = {
-    contacts: [
-      { id: 'id-0', name: 'fffff', number: '66666' },
-      { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-      { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-      { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-      { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-    ],
+    contacts: [...contacts],
     name: '',
     number: '',
     filter: '',
   };
-
+  componentDidMount() {
+    if (JSON.parse(localStorage.getItem('fox'))) {
+      this.setState({ contacts: JSON.parse(localStorage.getItem('fox')) });
+    }
+  }
+  // addLocalStorage = (prevState) => {
+  componentDidUpdate(prevProps, prevState) {
+    console.log('componentDidUpdate');
+    if (this.state.contacts !== prevState.contacts) {
+      console.log('Что то обновилось типа контакт');
+      localStorage.setItem('fox', JSON.stringify(this.state.contacts));
+    }
+  }
+  // }
   lowerCaseValue(value) {
     return value.toLowerCase();
   }
@@ -75,7 +84,7 @@ export class App extends Component {
 
   render() {
     return (
-      <div>
+      <Wrapper>
         <h2>Phonebook</h2>
         <ContactForm addContact={this.addContact} />
         <h2>Contacts</h2>
@@ -85,7 +94,7 @@ export class App extends Component {
           onDeleteContact={this.onDeleteContact}
           error={this.error}
         />
-      </div>
+      </Wrapper>
     );
   }
 }

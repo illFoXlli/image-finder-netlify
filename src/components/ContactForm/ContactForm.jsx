@@ -1,10 +1,19 @@
 import PropTypes from 'prop-types';
+import * as React from 'react';
+// import { StylesProvider } from '@mui/styles';
+
+import {
+  FormSubmit,
+  LabelName,
+  LabelNumber,
+  ButtonSubmit,
+} from './ContactForm.styled';
 
 const ContactForm = ({ addContact }) => {
   return (
     <>
-      <form onSubmit={e => addContact(e)}>
-        <label>
+      <FormSubmit onSubmit={e => addContact(e)}>
+        <LabelName>
           Имя:
           <input
             type="text"
@@ -14,8 +23,8 @@ const ContactForm = ({ addContact }) => {
             title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
             required
           />
-        </label>
-        <label>
+        </LabelName>
+        <LabelNumber>
           Номер:
           <input
             type="tel"
@@ -25,9 +34,17 @@ const ContactForm = ({ addContact }) => {
             title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
             required
           />
-        </label>
-        <input type="submit" value="Add contact" />
-      </form>
+        </LabelNumber>
+
+        <ButtonSubmit
+          type="submit"
+          variant="text"
+          color="success"
+          disableElevation
+        >
+          Add contact
+        </ButtonSubmit>
+      </FormSubmit>
     </>
   );
 };

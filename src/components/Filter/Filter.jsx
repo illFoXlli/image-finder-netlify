@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types';
+import { InputFilter } from './Filter.styled';
 
 const Filter = ({ setFilter }) => {
   return (
-    <input
+    <InputFilter
       type="text"
       name="filter"
       pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"

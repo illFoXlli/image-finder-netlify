@@ -1,21 +1,22 @@
 import { nanoid } from 'nanoid';
 import PropTypes from 'prop-types';
+import { Contacts, ContactsItem, Button } from './Contacts.styled';
 
 const ContactsList = ({ toShow, onDeleteContact, error }) => {
   if (toShow().length) {
     return (
-      <ul>
+      <Contacts>
         {toShow().map(contact => {
           return (
-            <li key={nanoid()}>
+            <ContactsItem key={nanoid()}>
               <p>{`${contact.name}: ${contact.number}`}</p>
-              <button type="button" onClick={() => onDeleteContact(contact.id)}>
+              <Button type="button" onClick={() => onDeleteContact(contact.id)}>
                 Delete
-              </button>
-            </li>
+              </Button>
+            </ContactsItem>
           );
         })}
-      </ul>
+      </Contacts>
     );
   } else {
     error('List is empty');
