@@ -1,6 +1,10 @@
+import * as React from 'react';
 import { nanoid } from 'nanoid';
 import PropTypes from 'prop-types';
-import { Contacts, ContactsItem, Button } from './Contacts.styled';
+import { Contacts, ContactsItem } from './Contacts.styled';
+import Stack from '@mui/material/Stack';
+import DeleteIcon from '@mui/icons-material/Delete';
+import IconButton from '@mui/material/IconButton';
 
 const ContactsList = ({ toShow, onDeleteContact, error }) => {
   if (toShow().length) {
@@ -10,9 +14,14 @@ const ContactsList = ({ toShow, onDeleteContact, error }) => {
           return (
             <ContactsItem key={nanoid()}>
               <p>{`${contact.name}: ${contact.number}`}</p>
-              <Button type="button" onClick={() => onDeleteContact(contact.id)}>
-                Delete
-              </Button>
+              <Stack direction="row" spacing={1}>
+                <IconButton
+                  aria-label="delete"
+                  onClick={() => onDeleteContact(contact.id)}
+                >
+                  <DeleteIcon />
+                </IconButton>
+              </Stack>
             </ContactsItem>
           );
         })}
@@ -20,7 +29,7 @@ const ContactsList = ({ toShow, onDeleteContact, error }) => {
     );
   } else {
     error('List is empty');
-    return <p>List is empty</p>;
+    return <h2>List is empty</h2>;
   }
 };
 ContactsList.propTypes = {

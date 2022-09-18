@@ -4,8 +4,10 @@ import ContactsList from '../ContactsList';
 import Filter from '../Filter';
 import { nanoid } from 'nanoid';
 import Notiflix from 'notiflix';
-import { Wrapper } from './App.styled';
+// import { Wrapper } from './App.styled';
 import contacts from 'components/data/contacts';
+
+import Wrapper from '../Wrapper';
 
 export class App extends Component {
   state = {
@@ -103,21 +105,31 @@ export class App extends Component {
 
   render() {
     return (
-      <Wrapper>
-        <h2>Phonebook</h2>
-        <ContactForm
-          addContact={this.addContact}
-          onChangeInputName={this.onChangeInputName}
-          onChangeInputNumber={this.onChangeInputNumber}
-        />
-        <h2>Contacts</h2>
-        <Filter setFilter={this.setFilter} />
-        <ContactsList
-          toShow={this.toShow}
-          onDeleteContact={this.onDeleteContact}
-          error={this.error}
-        />
-      </Wrapper>
+      <div
+        style={{
+          display: 'flex',
+          gap: '10px',
+          justifyContent: 'center',
+        }}
+      >
+        <Wrapper>
+          <h2>Phonebook</h2>
+          <ContactForm
+            addContact={this.addContact}
+            onChangeInputName={this.onChangeInputName}
+            onChangeInputNumber={this.onChangeInputNumber}
+          />
+          <h2>Filter Contacts</h2>
+          <Filter setFilter={this.setFilter} />
+        </Wrapper>
+        <Wrapper>
+          <ContactsList
+            toShow={this.toShow}
+            onDeleteContact={this.onDeleteContact}
+            error={this.error}
+          />
+        </Wrapper>
+      </div>
     );
   }
 }
