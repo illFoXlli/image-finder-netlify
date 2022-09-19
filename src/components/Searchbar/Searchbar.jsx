@@ -1,28 +1,50 @@
+import { Component } from 'react';
 import {
   HesderSearchbar,
   SearchForm,
   SearchFormButton,
-  SearchFormButtonLabel,
   SearchFormInput,
 } from './Searchbar.styled.js';
+import { FiAperture } from 'react-icons/fi';
 
-const Searchbar = () => {
-  return (
-    <HesderSearchbar>
-      <SearchForm>
-        <SearchFormButton type="submit">
-          <SearchFormButtonLabel>Search</SearchFormButtonLabel>
-        </SearchFormButton>
+export class Searchbar extends Component {
+  state = {
+    input: '',
+  };
 
-        <SearchFormInput
-          type="text"
-          autocomplete="off"
-          autofocus
-          placeholder="Search images and photos"
-        />
-      </SearchForm>
-    </HesderSearchbar>
-  );
-};
+  inputValue = () => {
+    this.props.returnInpet(this.state.input);
+  };
+  handleSubmit = e => {
+    this.props.submitForm(e);
+    // this.setState({ input: '' });
+    this.props.returnInpet(this.state.input);
+  };
 
-export default Searchbar;
+  saveInputState = e => {
+    this.setState({ input: e.target.value });
+  };
+
+  render() {
+    return (
+      <HesderSearchbar>
+        <SearchForm onSubmit={this.handleSubmit}>
+          <SearchFormButton type="submit">
+            {/* <SearchFormButtonLabel> */}
+            <FiAperture style={{ width: '36px', height: '44px' }} />
+            {/* </SearchFormButtonLabel> */}
+          </SearchFormButton>
+
+          <SearchFormInput
+            onChange={this.saveInputState}
+            name="name"
+            type="text"
+            autocomplete="off"
+            // autofocus
+            placeholder="Search images and photos"
+          />
+        </SearchForm>
+      </HesderSearchbar>
+    );
+  }
+}

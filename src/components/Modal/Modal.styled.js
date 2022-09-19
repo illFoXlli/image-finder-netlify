@@ -17,3 +17,7 @@ export const BackDrop = styled.div`
   background-color: rgba(0, 0, 0, 0.8);
   z-index: 1200;
 `;
+
+export const Img = styled.img`
+  height: 100vh;
+`;

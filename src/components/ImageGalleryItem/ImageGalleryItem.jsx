@@ -1,9 +1,9 @@
-import { ListItem } from './ImageGalleryItem.styled';
+import { ListItem, Img } from './ImageGalleryItem.styled';
 
-const ImageGalleryItem = () => {
+const ImageGalleryItem = ({ tags, webformatURL, modalOn, id }) => {
   return (
     <ListItem>
-      <img src="" alt="" />
+      <Img src={webformatURL} alt={tags} onClick={() => modalOn(id)} />
     </ListItem>
   );
 };

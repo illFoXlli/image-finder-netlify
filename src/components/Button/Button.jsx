@@ -1,7 +1,7 @@
 import { Btn } from './Button.styled';
 
-const Button = () => {
-  return <Btn>Load more</Btn>;
+const Button = ({ nextPage }) => {
+  return <Btn onClick={nextPage}>Load more</Btn>;
 };
 
 export default Button;

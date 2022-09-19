@@ -1,12 +1,15 @@
-import { ModalWindow, BackDrop } from './Modal.styled';
+import { ModalWindow, BackDrop, Img } from './Modal.styled';
+import ReactDOM from 'react-dom';
 
-const Modal = () => {
-  return (
-    <BackDrop>
+const Modal = ({ arrayPictures, id, modalOn }) => {
+  const picture = arrayPictures.filter(item => item.id === id);
+  return ReactDOM.createPortal(
+    <BackDrop onClick={modalOn}>
       <ModalWindow>
-        <img src="" alt="" />
+        <Img src={picture[0].largeImageURL} alt={picture[0].tags} />
       </ModalWindow>
-    </BackDrop>
+    </BackDrop>,
+    document.getElementById('modal')
   );
 };
 
