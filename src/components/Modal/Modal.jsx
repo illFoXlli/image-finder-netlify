@@ -1,16 +1,27 @@
 import { ModalWindow, BackDrop, Img } from './Modal.styled';
 import ReactDOM from 'react-dom';
+import PropTypes from 'prop-types';
 
-const Modal = ({ arrayPictures, id, modalOn }) => {
-  const picture = arrayPictures.filter(item => item.id === id);
+const Modal = ({ pictur, modalOn }) => {
+  const closeModel = e => {
+    if (e.target === e.currentTarget) {
+      modalOn(null);
+    }
+  };
+
   return ReactDOM.createPortal(
-    <BackDrop onClick={modalOn}>
+    <BackDrop onClick={closeModel}>
       <ModalWindow>
-        <Img src={picture[0].largeImageURL} alt={picture[0].tags} />
+        <Img src={pictur.largeImageURL} alt={pictur.tags} />
       </ModalWindow>
     </BackDrop>,
     document.getElementById('modal')
   );
+};
+
+Modal.propTypes = {
+  pictur: PropTypes.string,
+  modalOn: PropTypes.func,
 };
 
 export default Modal;

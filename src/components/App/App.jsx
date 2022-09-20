@@ -5,7 +5,8 @@ import { Searchbar } from '../Searchbar';
 import Button from '../Button';
 import faechAPI from '../faechAPI';
 import Modal from '../Modal';
-import Loader from '../Loader';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export class App extends Component {
   state = {
@@ -13,9 +14,12 @@ export class App extends Component {
     page: 1,
     status: 'idle',
     showModal: false,
-    id: '',
     input: '',
+    submit: true,
+    data: null,
+    loading: false,
   };
+  notify = () => toast('Wow so easy!');
 
   returnInpet = input => {
     this.setState({ input: input });
@@ -23,12 +27,34 @@ export class App extends Component {
   componentDidMount() {
     window.addEventListener('keydown', this.handleKeyDown);
   }
+
+  async componentDidUpdate(prevProps, prevState) {
+    if (
+      this.state.input !== prevState.input ||
+      this.state.page !== prevState.page
+    ) {
+      this.setState({ loading: true });
+      const data = await faechAPI(this.state.input, this.state.page)
+        .catch(err => console.log(err))
+        .finally(this.setState({ loading: false }));
+      if (this.state.page !== 1) {
+        this.setState(prevState => ({
+          photos: [...prevState.photos, ...data],
+        }));
+      } else {
+        this.setState({
+          photos: [...data],
+        });
+      }
+    }
+  }
+
   componentWillUnmount() {
     window.removeEventListener('keydown', this.handleKeyDown);
   }
-  modalOn = idImg => {
-    this.setState(({ showModal }) => ({ showModal: !showModal }));
-    this.setState({ id: idImg });
+
+  modalOn = data => {
+    this.setState(prevState => ({ showModal: !prevState.showModal, data }));
   };
   handleKeyDown = e => {
     if (e.code === 'Escape') {
@@ -36,31 +62,13 @@ export class App extends Component {
     }
   };
 
-  submitForm = e => {
-    e.preventDefault();
-    const form = e.currentTarget;
-    const faechAPIObj = faechAPI(this.state.input, this.state.page);
-    faechAPIObj.then(respons =>
-      this.setState({
-        photos: [...respons],
-      })
-    );
-    form.elements.name.value = '';
-    this.setState({ page: 2 });
+  submitForm = value => {
+    this.setState({ input: value, page: 1 });
+    this.state.photos.length && this.notify();
   };
 
-  // this.setState(prevState => ({
-  //       contacts: [contact, ...prevState.contacts],
-  //     }));
-
-  nextPage = () => {
-    const faechAPIObj = faechAPI(this.state.input, this.state.page);
-    faechAPIObj.then(respons =>
-      this.setState(provState => ({
-        photos: [...provState.photos, ...respons],
-      }))
-    );
-    this.setState(prevState => ({ page: prevState.page + 1 }));
+  nextPage = async () => {
+    this.setState(prevState => ({ loading: true, page: prevState.page + 1 }));
   };
 
   render() {
@@ -71,12 +79,10 @@ export class App extends Component {
             submitForm={this.submitForm}
             returnInpet={this.returnInpet}
           />
+
+          <ToastContainer />
           {this.state.showModal && (
-            <Modal
-              arrayPictures={this.state.photos}
-              id={this.state.id}
-              modalOn={this.modalOn}
-            />
+            <Modal pictur={this.state.data} modalOn={this.modalOn} />
           )}
           {!this.state.photos.length ? (
             ''
@@ -88,29 +94,12 @@ export class App extends Component {
                   modalOn={this.modalOn}
                 />
               </Wrapper>
+              {/* {this.state.loading && <Loader />} */}
               <Button nextPage={this.nextPage} />
             </>
           )}
         </>
       );
     }
-
-    if (this.state.status === 'spiner') {
-      return <Loader />;
-    }
   }
 }
-
-// Забирать данны из LS
-// componentDidMount() {
-//   if (JSON.parse(localStorage.getItem('fox'))) {
-//     this.setState({ contacts: JSON.parse(localStorage.getItem('fox')) });
-//   }
-// }
-// Запись в LS
-// componentDidUpdate(prevProps, prevState) {
-//   if (this.state.contacts !== prevState.contacts) {
-//     console.log('Что то обновилось типа контакт');
-//     localStorage.setItem('fox', JSON.stringify(this.state.contacts));
-//   }
-// }

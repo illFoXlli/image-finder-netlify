@@ -3,22 +3,21 @@ import {
   HesderSearchbar,
   SearchForm,
   SearchFormButton,
+  SearchFormButtonLabel,
   SearchFormInput,
 } from './Searchbar.styled.js';
-import { FiAperture } from 'react-icons/fi';
+import PropTypes from 'prop-types';
 
 export class Searchbar extends Component {
   state = {
     input: '',
   };
+  componentWillUnmount() {}
 
-  inputValue = () => {
-    this.props.returnInpet(this.state.input);
-  };
   handleSubmit = e => {
-    this.props.submitForm(e);
-    // this.setState({ input: '' });
-    this.props.returnInpet(this.state.input);
+    e.preventDefault();
+    this.props.submitForm(this.state.input);
+    this.setState({ input: '' });
   };
 
   saveInputState = e => {
@@ -30,9 +29,7 @@ export class Searchbar extends Component {
       <HesderSearchbar>
         <SearchForm onSubmit={this.handleSubmit}>
           <SearchFormButton type="submit">
-            {/* <SearchFormButtonLabel> */}
-            <FiAperture style={{ width: '36px', height: '44px' }} />
-            {/* </SearchFormButtonLabel> */}
+            <SearchFormButtonLabel>Search</SearchFormButtonLabel>
           </SearchFormButton>
 
           <SearchFormInput
@@ -40,11 +37,15 @@ export class Searchbar extends Component {
             name="name"
             type="text"
             autocomplete="off"
-            // autofocus
             placeholder="Search images and photos"
+            value={this.state.input}
           />
         </SearchForm>
       </HesderSearchbar>
     );
   }
 }
+
+Searchbar.propTypes = {
+  submitForm: PropTypes.func,
+};
