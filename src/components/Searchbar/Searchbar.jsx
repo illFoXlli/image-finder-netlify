@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import {
   HesderSearchbar,
   SearchForm,
@@ -8,43 +8,38 @@ import {
 } from './Searchbar.styled.js';
 import PropTypes from 'prop-types';
 
-export class Searchbar extends Component {
-  state = {
-    input: '',
-  };
-  componentWillUnmount() {}
+export const Searchbar = ({ submitForm }) => {
+  const [input, setInput] = useState('');
 
-  handleSubmit = e => {
+  const handleSubmit = e => {
     e.preventDefault();
-    this.props.submitForm(this.state.input);
-    this.setState({ input: '' });
+    submitForm(input);
+    setInput('');
   };
 
-  saveInputState = e => {
-    this.setState({ input: e.target.value });
+  const saveInputState = e => {
+    setInput(e.target.value);
   };
 
-  render() {
-    return (
-      <HesderSearchbar>
-        <SearchForm onSubmit={this.handleSubmit}>
-          <SearchFormButton type="submit">
-            <SearchFormButtonLabel>Search</SearchFormButtonLabel>
-          </SearchFormButton>
+  return (
+    <HesderSearchbar>
+      <SearchForm onSubmit={handleSubmit}>
+        <SearchFormButton type="submit">
+          <SearchFormButtonLabel>Search</SearchFormButtonLabel>
+        </SearchFormButton>
 
-          <SearchFormInput
-            onChange={this.saveInputState}
-            name="name"
-            type="text"
-            autocomplete="off"
-            placeholder="Search images and photos"
-            value={this.state.input}
-          />
-        </SearchForm>
-      </HesderSearchbar>
-    );
-  }
-}
+        <SearchFormInput
+          onChange={saveInputState}
+          name="name"
+          type="text"
+          autocomplete="off"
+          placeholder="Search images and photos"
+          value={input}
+        />
+      </SearchForm>
+    </HesderSearchbar>
+  );
+};
 
 Searchbar.propTypes = {
   submitForm: PropTypes.func,

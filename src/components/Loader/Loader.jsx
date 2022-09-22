@@ -1,16 +1,19 @@
 import { Audio } from 'react-loader-spinner';
+import { StyedDiv } from './Loader.styled';
 
 const Loader = () => {
   return (
-    <Audio
-      height="80"
-      width="80"
-      radius="9"
-      color="green"
-      ariaLabel="three-dots-loading"
-      wrapperStyle
-      wrapperClass
-    />
+    <StyedDiv>
+      <Audio
+        height="200"
+        width="200"
+        color="#ff005d"
+        ariaLabel="audio-loading"
+        wrapperStyle={{}}
+        wrapperClass="wrapper-class"
+        visible={true}
+      />
+    </StyedDiv>
   );
 };
 
