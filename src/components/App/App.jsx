@@ -76,7 +76,7 @@ export const App = () => {
     <>
       <Searchbar submitForm={submitForm} returnInpet={input} />
       <ToastContainer />
-      <Loading />
+      {loading && <Loading />}
       {showModal && (
         <Modal
           pictur={data}
